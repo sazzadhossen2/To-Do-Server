@@ -1,32 +1,3 @@
-// import Todo, { ITodo } from "../models/todo";
-// import { Request,Response } from "express";
-
-// export const createTodo =  async (req: Request, res: Response) => {
-//   const todo = new Todo<ITodo>(req.body); // No <ITodo> needed here
-
-//   try {
-//     await todo.save();
-//     res.status(201).json({
-//       message: 'Todo created successfully',
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       error,
-//     });
-//   }
-// }
-
-
-
-// export const getTodo =async (req: Request, res: Response) => {
-//   const todos =await Todo.find<ITodo>(); 
-
-// res.json({
-//   todos,
-// });
-// }
-
-
 import Todo from "../models/todo";
 import { Request, Response } from "express";
 
@@ -54,45 +25,36 @@ export const getTodo = async (req: Request, res: Response) => {
   }
 };
 
+export const getTodoById = async (req: Request, res: Response) => {
+  try {
+    const _id = req.params._id;
+    const todo = await Todo.find({_id});
 
-// export const getTodoById =async (req: Request, res: Response)=>{
-// const todoId =req.params._id;
+    if(!todo) {
+      res.status(404).json({
+        message: "The todo does not exist",
+      })
+    }
 
-// try{
-//   const todo =await Todo.findById(todoId);
-//   if(!todo){
-//     return res.status(404).json({
-//       message:"The todo does not exist",
-//     });
-//   }
-//     return res.json({
-//       todo,
-//     })
-  
-// }catch(error){
-// return res.status(500).json({
-//   error,
-// });
-// }
-// };
+    res.json({ todo });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
 
+export const deleteTodoById = async (req: Request, res: Response) => {
+  try {
+    const _id = req.params._id;
+    const todo = await Todo.deleteOne({_id});
 
+    if(!todo) {
+      res.status(404).json({
+        message: "The todo couldn't deleted!",
+      })
+    }
 
-
-// export const getTodoById = async (req: Request, res: Response) => {
-//   const todoId =req.params._id;
-
-//   try {
-//     const todo= await Todo.findById(todoId);
-// if(!todo){
-//   return res.status(404).json({
-//           message:"The todo does not exist",
-//         });
-// }
-// return res.json({
-//         todo,
-//       })
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
-// };
+    res.json({ message: "The todo was deleted successfully!"  });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
