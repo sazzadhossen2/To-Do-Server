@@ -5,6 +5,10 @@
 //   console.log(`Server started at port: ${PORT}`);
 // });
 
+
+
+
+
 import mongoose from "mongoose";
 import app from "./app";
 
@@ -19,13 +23,3 @@ mongoose
     });
   })
   .catch((err) => console.error("MongoDB error:", err));
-
-// import app from "./app"; // imports your Express app
-// import "./db/mongoose";  // connects to MongoDB
-
-// const PORT = process.env.PORT || 8080;
-
-// app.listen(PORT, () => {
-//   console.log(`Server started at port: ${PORT}`);
-// });
-
